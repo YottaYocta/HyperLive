@@ -37,6 +37,38 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ---
 
+## Screenshots
+
+### App — Hero
+
+![HyperLive hero](./HyperliveHero.jpg)
+
+### App — Dashboard
+
+![HyperLive dashboard demo](./Hyperlive%20demo.jpg)
+
+### Help Request
+
+![Help request page](../helprequest.png)
+
+### Discord — Help Dispatch
+
+![Discord help dispatch](../help.png)
+
+### Connectivity — App View
+
+![Connectivity dashboard](../appconnectivity.png)
+
+### Connectivity — Discord Alert
+
+![Discord connectivity alert](../connectivity.png)
+
+### Admin — Team View
+
+![Admin team view](../team.png)
+
+---
+
 ## Demo Script
 
 **The problem.**
