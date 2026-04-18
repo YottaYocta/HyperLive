@@ -14,7 +14,9 @@ export default function Nav() {
   return (
     <nav className="bg-white">
       <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-        <span className="font-semibold tracking-tight text-[--color-foreground]">ara</span>
+        <span className="font-semibold tracking-tight text-[--color-foreground] text-2xl">
+          HyperLive
+        </span>
         <div className="flex items-center gap-1">
           {links.map(({ href, label }) => {
             const active = pathname === href;
@@ -24,8 +26,8 @@ export default function Nav() {
                 href={href}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   active
-                    ? "bg-black text-white"
-                    : "text-[--color-muted] hover:text-[--color-foreground] hover:bg-zinc-100"
+                    ? "bg-blue-600 text-white"
+                    : "text-[--color-muted] hover:text-[--color-foreground] hover:bg-zinc-100 "
                 }`}
               >
                 {label}

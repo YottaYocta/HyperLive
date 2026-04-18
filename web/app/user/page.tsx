@@ -44,13 +44,13 @@ export default function UserPage() {
   return (
     <div className="flex flex-col gap-8">
       {/* Table map */}
-      <section className="bg-zinc-100 rounded-2xl p-6">
+      <section className="bg-zinc-100  rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold tracking-wide uppercase text-[--color-muted]">
             Your Table
           </h2>
           {selectedTable && (
-            <span className="text-sm font-semibold bg-black text-white px-2.5 py-0.5 rounded-full">
+            <span className="text-sm font-semibold bg-blue-600 text-white px-2.5 py-0.5 rounded-full">
               Table {selectedTable}
             </span>
           )}
@@ -69,8 +69,8 @@ export default function UserPage() {
                   onClick={() => setSelectedTable(selected ? null : id)}
                   className={`rounded-lg text-xs font-semibold py-2.5 transition-all duration-150 ${
                     selected
-                      ? "bg-black text-white shadow-sm scale-95"
-                      : "bg-white text-zinc-400 hover:text-black hover:bg-zinc-100"
+                      ? "bg-blue-600 text-white shadow-sm scale-95"
+                      : "bg-white text-zinc-400 hover:text-blue-600 hover:bg-zinc-100 "
                   }`}
                 >
                   {id}
@@ -82,7 +82,7 @@ export default function UserPage() {
       </section>
 
       {/* Chat */}
-      <section className="bg-zinc-100 rounded-2xl flex flex-col overflow-hidden">
+      <section className="bg-zinc-100  rounded-2xl flex flex-col overflow-hidden">
         <div className="flex flex-col gap-3 p-6 min-h-55">
           {messages.length === 0 && (
             <div className="flex flex-1 items-center justify-center text-[--color-muted] text-sm py-8">
@@ -97,7 +97,7 @@ export default function UserPage() {
               <div
                 className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-black text-white rounded-br-sm"
+                    ? "bg-blue-600 text-white rounded-br-sm"
                     : "bg-white text-zinc-800 rounded-bl-sm"
                 }`}
               >
@@ -136,7 +136,7 @@ export default function UserPage() {
         <div className="p-4 pt-0">
           <form onSubmit={handleSubmit} className="flex gap-2">
             <input
-              className="flex-1 rounded-xl bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-black/10 transition placeholder:text-[--color-muted]"
+              className="flex-1 rounded-xl bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition placeholder:text-[--color-muted]"
               placeholder="request help"
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -145,7 +145,7 @@ export default function UserPage() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-xl bg-black text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-30 hover:bg-zinc-800 transition-colors"
+              className="rounded-xl bg-blue-600 text-white px-5 py-2.5 text-sm font-semibold disabled:opacity-30 hover:bg-blue-700 transition-colors"
             >
               Send
             </button>

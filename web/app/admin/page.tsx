@@ -11,7 +11,7 @@ export default function AdminPage() {
           {staff.map((u) => (
             <div
               key={u.id}
-              className="flex items-center gap-4 bg-zinc-50 rounded-xl px-4 py-3"
+              className="flex items-center gap-4 bg-zinc-100  rounded-xl px-4 py-3"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -20,7 +20,9 @@ export default function AdminPage() {
                     {u.type}
                   </span>
                 </div>
-                <p className="text-xs text-[--color-muted] mt-0.5 truncate">{u.specializations}</p>
+                <p className="text-xs text-[--color-muted] mt-0.5 truncate">
+                  {u.specializations}
+                </p>
               </div>
             </div>
           ))}
@@ -35,7 +37,7 @@ export default function AdminPage() {
           {events.map((e) => (
             <div
               key={e.id}
-              className="bg-zinc-50 rounded-xl px-4 py-3 text-sm font-medium"
+              className="bg-zinc-100 rounded-xl px-4 py-3 text-sm font-medium"
             >
               {e.name}
             </div>
