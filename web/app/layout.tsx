@@ -29,10 +29,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[--color-background] text-[--color-foreground]">
         <StoreProvider>
           <Nav />
-          {children}
+          <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-10">
+            {children}
+          </main>
         </StoreProvider>
       </body>
     </html>

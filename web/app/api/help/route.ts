@@ -3,7 +3,7 @@ import { staff, events } from "@/app/ts/db";
 const DISCORD_SERVICE_URL = process.env.DISCORD_SERVICE_URL ?? "http://localhost:3000";
 const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID ?? "";
 
-async function getFirstChannelId(): Promise<string | null> {
+async function getFirstTextChannelId(): Promise<string | null> {
   if (!DISCORD_GUILD_ID) return null;
   try {
     const res = await fetch(`${DISCORD_SERVICE_URL}/channels/${DISCORD_GUILD_ID}`);
@@ -17,26 +17,33 @@ async function getFirstChannelId(): Promise<string | null> {
 export async function POST(request: Request) {
   const { prompt, table } = await request.json();
 
-  const channelId = await getFirstChannelId();
+  // Persist to the bot's help-request store (for Ara to pick up)
+  try {
+    await fetch(`${DISCORD_SERVICE_URL}/help-request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, table }),
+    });
+  } catch {
+    // best-effort
+  }
+
+  // Immediate Discord notification
+  const channelId = await getFirstTextChannelId();
   if (channelId) {
     const location = table ? ` at Table ${table}` : "";
     try {
       await fetch(`${DISCORD_SERVICE_URL}/send-message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          channelId,
-          content: `hacker has requested help${location}`,
-        }),
+        body: JSON.stringify({ channelId, content: `hacker has requested help${location}` }),
       });
     } catch {
-      // Discord notification is best-effort; don't fail the request
+      // best-effort
     }
   }
 
   // Future: query ara.so with prompt + table + staff/events context
-  void prompt;
-  void table;
   void staff;
   void events;
 
