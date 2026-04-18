@@ -103,7 +103,9 @@ Steps every run:
       Example: "**Ben Nakamura** **Eva Torres** — hacker needs React help → Table B3"
    d. Call send_discord_message with that message.
    e. Call mark_request_handled with the request's id.
-5. After processing all requests, output a brief summary of what was dispatched.
+5. If linq_send_message is available and a phone route is paired, send the same
+   dispatch summary as a linq message.
+6. After processing all requests, output a brief summary of what was dispatched.
 """,
     tools=[
         get_unhandled_help_requests,
