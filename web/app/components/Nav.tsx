@@ -12,7 +12,7 @@ const links = [
 export default function Nav() {
   const pathname = usePathname();
   return (
-    <nav className="border-b border-[--color-border] bg-[--color-surface] shadow-sm">
+    <nav className="bg-white">
       <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
         <span className="font-semibold tracking-tight text-[--color-foreground]">ara</span>
         <div className="flex items-center gap-1">

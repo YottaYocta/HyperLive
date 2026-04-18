@@ -2,19 +2,25 @@ import { staff, events } from "@/app/ts/db";
 
 export default function AdminPage() {
   return (
-    <div className="max-w-2xl mx-auto w-full px-4 py-8 flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
       <section>
-        <h2 className="text-base font-semibold mb-3">Staff</h2>
-        <div className="flex flex-col gap-2">
+        <h2 className="text-xs font-semibold tracking-wide uppercase text-[--color-muted] mb-3">
+          Staff
+        </h2>
+        <div className="flex flex-col gap-1.5">
           {staff.map((u) => (
             <div
               key={u.id}
-              className="flex items-start gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm"
+              className="flex items-center gap-4 bg-zinc-50 rounded-xl px-4 py-3"
             >
-              <div className="flex-1">
-                <span className="font-medium">{u.name}</span>
-                <span className="ml-2 text-xs text-zinc-500 capitalize">{u.type}</span>
-                <p className="text-zinc-500 dark:text-zinc-400 mt-0.5">{u.specializations}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold">{u.name}</span>
+                  <span className="text-xs bg-zinc-200 text-zinc-500 px-2 py-0.5 rounded-full capitalize font-medium">
+                    {u.type}
+                  </span>
+                </div>
+                <p className="text-xs text-[--color-muted] mt-0.5 truncate">{u.specializations}</p>
               </div>
             </div>
           ))}
@@ -22,12 +28,14 @@ export default function AdminPage() {
       </section>
 
       <section>
-        <h2 className="text-base font-semibold mb-3">Events</h2>
-        <div className="flex flex-col gap-2">
+        <h2 className="text-xs font-semibold tracking-wide uppercase text-[--color-muted] mb-3">
+          Events
+        </h2>
+        <div className="flex flex-col gap-1.5">
           {events.map((e) => (
             <div
               key={e.id}
-              className="rounded-lg border border-zinc-200 dark:border-zinc-800 px-4 py-3 text-sm"
+              className="bg-zinc-50 rounded-xl px-4 py-3 text-sm font-medium"
             >
               {e.name}
             </div>

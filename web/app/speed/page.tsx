@@ -5,8 +5,8 @@ import type { RoomSpeed, ProbeResult } from "@/app/ts/speed";
 
 function speedStyle(ms: number | null, ok: boolean): { bar: string; text: string } {
   if (!ok || ms === null) return { bar: "bg-red-400", text: "text-red-500" };
-  if (ms < 250) return { bar: "bg-zinc-400 dark:bg-zinc-500", text: "text-zinc-600 dark:text-zinc-400" };
-  if (ms < 500) return { bar: "bg-amber-400", text: "text-amber-600 dark:text-amber-400" };
+  if (ms < 250) return { bar: "bg-zinc-300", text: "text-zinc-500" };
+  if (ms < 500) return { bar: "bg-amber-400", text: "text-amber-600" };
   return { bar: "bg-red-400", text: "text-red-500" };
 }
 
@@ -16,11 +16,18 @@ function avgMs(results: ProbeResult[]): number | null {
   return Math.round(ok.reduce((sum, r) => sum + (r.ms as number), 0) / ok.length);
 }
 
-function avgStyle(ms: number | null): string {
+function avgColor(ms: number | null): string {
   if (ms === null) return "text-red-500";
-  if (ms < 250) return "text-zinc-800 dark:text-zinc-200";
+  if (ms < 250) return "text-zinc-800";
   if (ms < 500) return "text-amber-500";
   return "text-red-500";
+}
+
+function statusLabel(ms: number | null): { label: string; dot: string } {
+  if (ms === null) return { label: "unreachable", dot: "bg-red-400" };
+  if (ms < 250) return { label: "good", dot: "bg-emerald-400" };
+  if (ms < 500) return { label: "moderate", dot: "bg-amber-400" };
+  return { label: "degraded", dot: "bg-red-400" };
 }
 
 export default function SpeedPage() {
@@ -39,11 +46,13 @@ export default function SpeedPage() {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto w-full px-4 py-8">
-      <h2 className="text-base font-semibold mb-6">Connectivity</h2>
+    <div className="flex flex-col gap-6">
+      <h2 className="text-xs font-semibold tracking-wide uppercase text-[--color-muted]">
+        Connectivity
+      </h2>
 
       {rooms.length === 0 ? (
-        <p className="text-sm text-zinc-400">Measuring...</p>
+        <p className="text-sm text-[--color-muted]">Measuring…</p>
       ) : (
         <div className="grid grid-cols-2 gap-4">
           {rooms.map((room) => {
@@ -52,56 +61,56 @@ export default function SpeedPage() {
             const maxMs = metrics
               ? Math.max(...metrics.results.filter((r) => r.ok && r.ms !== null).map((r) => r.ms as number), 1)
               : 1;
+            const status = statusLabel(avg);
 
             return (
               <div
                 key={room.room}
-                className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 flex flex-col gap-4"
+                className="bg-zinc-50 rounded-2xl p-5 flex flex-col gap-5"
               >
-                {/* Header */}
+                {/* Card header */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-zinc-500 uppercase tracking-wide">
+                  <span className="text-xs font-semibold tracking-wide uppercase text-[--color-muted]">
                     Room {room.room}
                   </span>
-                  {metrics && (
-                    <span className="text-xs text-zinc-400">
-                      {new Date(metrics.measuredAt).toLocaleTimeString()}
-                    </span>
-                  )}
+                  <span className="flex items-center gap-1.5 text-xs text-[--color-muted]">
+                    <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
+                    {status.label}
+                  </span>
                 </div>
 
                 {/* Average */}
-                <div className="flex flex-col items-center justify-center py-2">
+                <div className="flex flex-col items-center py-1">
                   {avg !== null ? (
                     <>
-                      <span className={`text-4xl font-semibold tabular-nums ${avgStyle(avg)}`}>
+                      <span className={`text-5xl font-semibold tabular-nums leading-none ${avgColor(avg)}`}>
                         {avg}
                       </span>
-                      <span className="text-xs text-zinc-400 mt-1">ms avg</span>
+                      <span className="text-xs text-[--color-muted] mt-2">ms avg</span>
                     </>
                   ) : (
-                    <span className="text-sm text-zinc-400">pending...</span>
+                    <span className="text-sm text-[--color-muted]">pending…</span>
                   )}
                 </div>
 
-                {/* Bar grid */}
+                {/* Bars */}
                 {metrics && (
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
                     {metrics.results.map((r: ProbeResult) => {
-                      const style = speedStyle(r.ms, r.ok);
+                      const s = speedStyle(r.ms, r.ok);
                       return (
-                        <div key={r.url} className="flex flex-col gap-0.5">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-zinc-400 truncate">
+                        <div key={r.url} className="flex flex-col gap-1">
+                          <div className="flex justify-between items-baseline text-xs">
+                            <span className="text-[--color-muted] truncate">
                               {r.url.replace("https://", "").replace("www.", "")}
                             </span>
-                            <span className={`tabular-nums ${style.text} ml-1 shrink-0`}>
+                            <span className={`tabular-nums ml-1 shrink-0 font-medium ${s.text}`}>
                               {r.ok ? `${r.ms}` : "—"}
                             </span>
                           </div>
-                          <div className="h-1 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                          <div className="h-1 rounded-full bg-zinc-100 overflow-hidden">
                             <div
-                              className={`h-full rounded-full transition-all duration-500 ${style.bar}`}
+                              className={`h-full rounded-full transition-all duration-500 ${s.bar}`}
                               style={{ width: r.ok ? `${((r.ms ?? 0) / maxMs) * 100}%` : "100%" }}
                             />
                           </div>
@@ -109,6 +118,13 @@ export default function SpeedPage() {
                       );
                     })}
                   </div>
+                )}
+
+                {/* Timestamp */}
+                {metrics && (
+                  <p className="text-xs text-[--color-muted] text-right">
+                    {new Date(metrics.measuredAt).toLocaleTimeString()}
+                  </p>
                 )}
               </div>
             );
